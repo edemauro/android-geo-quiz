@@ -9,6 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+"Users can press Next until the question they cheated on comes back around."
+My solution: Use a hashset to store the index of the questions they cheated on.
+Once the judgment toast is displayed, remove the index from the hashset and check
+the hashset prior to displaying the message
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_CHEAT = 0;
