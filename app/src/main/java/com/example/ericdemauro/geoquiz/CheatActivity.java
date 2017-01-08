@@ -16,6 +16,7 @@ public class CheatActivity extends AppCompatActivity {
             "long.name.answer_shown";
 
     private boolean mAnswerIsTrue;
+    private boolean mIsAnswerShown;
 
     private TextView mAnswerTextView;
     private Button mShowAnswer;
@@ -28,6 +29,12 @@ public class CheatActivity extends AppCompatActivity {
 
     public static boolean wasAnswerShown(Intent result) {
         return result.getBooleanExtra(EXTRA_ANSWER_SHOWN, false);
+    }
+
+    private void setAnswerShownResult(boolean isAnswerShown) {
+        Intent data = new Intent();
+        data.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
+        setResult(RESULT_OK, data);
     }
 
     @Override
@@ -48,14 +55,21 @@ public class CheatActivity extends AppCompatActivity {
                 } else {
                     mAnswerTextView.setText(R.string.false_button);
                 }
-                setAnswerShownResult(true);
+                mIsAnswerShown = true;
+                setAnswerShownResult(mIsAnswerShown);
             }
         });
+
+        if(savedInstanceState != null) {
+            mIsAnswerShown = savedInstanceState.getBoolean(EXTRA_ANSWER_SHOWN);
+        }
+
+        setAnswerShownResult(mIsAnswerShown);
     }
 
-    private void setAnswerShownResult(boolean isAnswerShown) {
-        Intent data = new Intent();
-        data.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
-        setResult(RESULT_OK, data);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(EXTRA_ANSWER_SHOWN, mIsAnswerShown);
     }
 }

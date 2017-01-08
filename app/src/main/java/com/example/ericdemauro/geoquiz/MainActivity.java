@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String KEY_INDEX = "index";
     private static final int REQUEST_CODE_CHEAT = 0;
+    private static final String KEY_INDEX = "index";
+    private static final String EXTRA_CHEATED =
+            "long.name.cheated";
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -35,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
-
-        mIsCheater = false;
         mQuestionTextView.setText(question);
     }
 
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mCurrentIndex = mCurrentIndex == 0 ?
                        0 : (mCurrentIndex - 1) % mQuestionBank.length;
+                mIsCheater = false;
                 updateQuestion();
             }
         });
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mIsCheater = savedInstanceState.getBoolean(EXTRA_CHEATED, false);
         }
 
         updateQuestion();
@@ -144,5 +147,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_INDEX, mCurrentIndex);
+        outState.putBoolean(EXTRA_CHEATED, mIsCheater);
     }
 }
